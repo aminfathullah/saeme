@@ -15,7 +15,7 @@ Installation
     ```
 2. Install this package
     ```
-    devtools::install_github('asminfathullah')
+    devtools::install_github('aminfathullah')
     ```
 
 Usage Example
