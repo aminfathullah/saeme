@@ -1,0 +1,11 @@
+Package: saeme
+Title: Small Area Estimation with Measurement Error
+Version: 1.0
+Date: 2017-10-07
+Author: Amin Fathullah
+Maintainer: Amin Fathullah <amin_fathullah@yahoo.com>
+Description: This is a package for small area estimation when the covariates subject to sampling error. 
+Depends: MASS, expm
+Import: graphics
+LazyData: true
+License: GPL-2

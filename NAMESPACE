@@ -1,0 +1,6 @@
+importFrom("graphics", "plot")
+importFrom("MASS", 'ginv')
+importFrom('expm', 'sqrtm')
+export('FHme', 'print.FHme', 'plot.FHme', 'summary.FHme', 'print.summary.FHme')
+exportClasses('FHme', 'summary.FHme')
+
