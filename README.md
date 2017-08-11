@@ -11,7 +11,7 @@ Installation
 ----
 1. Install `devtools` package
     ```
-    install.packages('devtools')
+    install.packages('devtools') 
     ```
 2. Install this package
     ```
