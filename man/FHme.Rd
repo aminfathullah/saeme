@@ -31,7 +31,7 @@
     Ybarra, L. M., & Lohr, S. L. (2008). Small area estimation when auxiliary information is measured with error. Biometrika, 919-931.
 }
 \author{
-    Amin Fathullah (\email{13.7484@stis.ac.id})
+    Amin Fathullah (\email{amin_fathullah@yahoo.com})
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

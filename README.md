@@ -13,10 +13,14 @@ Installation
     ```
     install.packages('devtools')
     ```
-2. Install this package
+2. Install `saeme` package
     ```
     devtools::install_github('aminfathullah/saeme')
     ```
+3. Load `saeme` package
+    ````
+    library(saeme)
+    ````
 
 Usage Example
 ----
