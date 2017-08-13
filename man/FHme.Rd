@@ -45,7 +45,7 @@ sae_me <- FHme(y = bmi$y, x = cbind(1, bmi$x), vardir = bmi$mse_y, C = cbind(0, 
 sae_me
 summary(sae_me)
 plot(sae_me)
-
+}
 \keyword{sae}
 \keyword{covariate}
 \keyword{measuremnt}
