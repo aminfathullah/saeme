@@ -10,15 +10,16 @@ This package is currently including function for:
 Installation
 ----
 1. Install `devtools` package
-    ```
+
+    ```r
     install.packages('devtools')
     ```
 2. Install `saeme` package
-    ```
+    ```r
     devtools::install_github('aminfathullah/saeme')
     ```
 3. Load `saeme` package
-    ````
+    ````r
     library(saeme)
     ````
 
@@ -26,7 +27,7 @@ Usage Example
 ----
 Estimating mean body mass index
 
-```
+```r
 data(bmi)
 
 #calculate SAE with measurement error
