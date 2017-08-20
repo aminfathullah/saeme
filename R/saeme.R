@@ -157,21 +157,22 @@ jack_knife <- function(y, X, psi, C, j, iter)
     })
     i <- i + 1
   }
+
   # estimate gamma
   g_cap <- sapply(1:m, function(i)
   {
-    mse_ri <- sigma2_cap + t(b_cap)%*%diag(C[i,], nrow = p)%*%b_cap
+      mse_ri <- sigma2_cap + t(b_cap)%*%diag(C[i,], nrow = p)%*%b_cap
 
-    return(mse_ri/(mse_ri+psi[i]))
+      return(mse_ri/(mse_ri+psi[i]))
   })
 
   y_me <- sapply(1:m, function(i)
   {
-    y_me_i <- g_cap[i]*y[i] + (1 - g_cap[i])*t(as.matrix(X[i,]))%*%b_cap
-    return(y_me_i)
+      y_me_i <- g_cap[i]*y[i] + (1 - g_cap[i])*t(as.matrix(X[i,]))%*%b_cap
+      return(y_me_i)
   })
 
-  hasil <- list('y_me' = y_me, 'gamma' = g_cap)
+  hasil <- list('y_me' = y_me, 'gamma' = g_cap, 'beta' = b_cap)
   return(hasil)
 }
 
@@ -209,7 +210,9 @@ mse_FHme <- function(y, x, mse_y, mse_x, iter)
     }))
     return(jack_y_me)
   })
-  return(m1+m2)
+  mse <- m1 + m2
+  b_cap <- t(sapply(jack, function(x) x$beta))
+  return(list("mse"=mse, "beta"=b_cap))
 }
 
 FHme <- function(y, x, vardir, C, iter = 2)
@@ -228,18 +231,45 @@ FHme <- function(y, x, vardir, C, iter = 2)
 
   est <- estimator_FHme(y, X, psi, C, iter)
 
-  mse <- mse_FHme(y, x, vardir, C, iter)
+  mse_beta <- mse_FHme(y, x, vardir, C, iter)
 
   sae <- est
-  sae$mse <- mse
+  sae$mse <- mse_beta$mse
   sae$call <- match.call()
+  sae$b_delete <- mse_beta$beta
   class(sae) <- 'FHme'
   return(sae)
 }
 
+FHme_unsampled <- function(model, x)
+{
+    X <- as.matrix(x)
+    p <- dim(X)[2]
+    m <- length(model$y_me)
+    m_new <- m  + nrow(X)
+    print(m)
+
+    y <- sapply(1:nrow(X), function(i) t(as.matrix(X[i,])) %*% model$beta)
+    mse_part <- sapply(1:nrow(X), function(i)
+    {
+        jack_y_me <- ((m_new-1)/m_new) * sum(sapply(1:m_new, function(j)
+        {
+            if(j <= m)
+                jack_j_i <- t(as.matrix(X[i,])) %*% as.matrix(model$b_delete[j,])
+            else
+                jack_j_i <- y[i]
+            return((jack_j_i - y[i])^2)
+        }))
+        return(jack_y_me)
+    })
+    y_new <- c(model$y_me, y)
+    mse_new <- c(((m*(m_new-1))/(m_new*(m-1)))*model$mse, mse_part)
+    return(list("y_me" = y_new, "mse" = mse_new))
+}
+
 print.FHme <- function(x, ...)
 {
-  sae <- as.data.frame(x[-c(3,4,5,7)])
+  sae <- as.data.frame(x[-c(3,4,5,7,8)])
 
   cat("Call:\n")
   print(x$call)
