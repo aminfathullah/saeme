@@ -241,18 +241,6 @@ FHme <- function(y, x, vardir, C, iter = 2)
   return(sae)
 }
 
-FHme_unsampled <- function(model, x, C)
-{
-    C <- as.matrix(C)
-    X <- as.matrix(x)
-    p <- dim(X)[2]
-    m <- dim(X)[1]
-
-    y <- sapply(1:m, function(i) t(X[i,]) %*% model$beta)
-    mse <- sapply(1:m, function(i) t(model$beta) %*% diag(C[i,], ncol = p) %*% model$beta)
-    return(list("y"=y, "mse"=mse))
-}
-
 print.FHme <- function(x, ...)
 {
   sae <- as.data.frame(x[-c(3,4,5,7)])
