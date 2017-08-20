@@ -211,8 +211,8 @@ mse_FHme <- function(y, x, mse_y, mse_x, iter)
     return(jack_y_me)
   })
   mse <- m1 + m2
-  b_cap <- t(sapply(jack, function(x) x$beta))
-  return(list("mse"=mse, "beta"=b_cap))
+
+  return(list("mse"=mse))
 }
 
 FHme <- function(y, x, vardir, C, iter = 2)
@@ -241,35 +241,21 @@ FHme <- function(y, x, vardir, C, iter = 2)
   return(sae)
 }
 
-FHme_unsampled <- function(model, x)
+FHme_unsampled <- function(model, x, C)
 {
+    C <- as.matrix(C)
     X <- as.matrix(x)
     p <- dim(X)[2]
-    m <- length(model$y_me)
-    m_new <- m  + nrow(X)
-    print(m)
+    m <- dim(X)[1]
 
-    y <- sapply(1:nrow(X), function(i) t(as.matrix(X[i,])) %*% model$beta)
-    mse_part <- sapply(1:nrow(X), function(i)
-    {
-        jack_y_me <- ((m_new-1)/m_new) * sum(sapply(1:m_new, function(j)
-        {
-            if(j <= m)
-                jack_j_i <- t(as.matrix(X[i,])) %*% as.matrix(model$b_delete[j,])
-            else
-                jack_j_i <- y[i]
-            return((jack_j_i - y[i])^2)
-        }))
-        return(jack_y_me)
-    })
-    y_new <- c(model$y_me, y)
-    mse_new <- c(((m*(m_new-1))/(m_new*(m-1)))*model$mse, mse_part)
-    return(list("y_me" = y_new, "mse" = mse_new))
+    y <- sapply(1:m, function(i) t(X[i,]) %*% model$beta)
+    mse <- sapply(1:m, function(i) t(model$beta) %*% diag(C[i,], ncol = p) %*% model$beta)
+    return(list("y"=y, "mse"=mse))
 }
 
 print.FHme <- function(x, ...)
 {
-  sae <- as.data.frame(x[-c(3,4,5,7,8)])
+  sae <- as.data.frame(x[-c(3,4,5,7)])
 
   cat("Call:\n")
   print(x$call)
