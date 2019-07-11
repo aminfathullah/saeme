@@ -273,4 +273,5 @@ plot.FHme <- function(x, ...)
   maks <- max(c(x$mse, x$psi))
 
   plot(x$psi, x$mse, xlim = c(0,maks), ylim = c(0,maks), xlab = 'Direct estimation', ylab = 'Small area estimation', main = 'Mean Square Error')
+  lines(x=0:100, y=0:100, type = "l")
 }

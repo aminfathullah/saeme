@@ -1,6 +1,9 @@
 importFrom("graphics", "plot")
 importFrom("MASS", 'ginv')
 importFrom('expm', 'sqrtm')
-export('FHme', 'print.FHme', 'plot.FHme', 'summary.FHme', 'print.summary.FHme')
+export('FHme')
 exportClasses('FHme', 'summary.FHme')
-
+S3method(print, FHme)
+S3method(plot, FHme)
+S3method(print, summary.FHme)
+S3method(summary, FHme)
